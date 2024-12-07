@@ -1,0 +1,34 @@
+1. Clone source code mailcow từ git về
+git clone https://github.com/mailcow/mailcow-dockerized
+
+2. Chuyển sang thư mục mailcow-dockerized
+cd mailcow-dockerized
+
+3. Tạo config file
+./generate_config.sh
+
+4. Start Mailcow Dockerized services
+docker-compose pull
+docker-compose up -d
+
+5. Cấu hình firewall và allow port
+service ufw status
+sudo ufw allow 25,80,443,110,143,465,587,993,995/tcp
+
+
+
+###############################
+Set up DNS Records
+A	    mail	        Your Server’s IP address
+CNAME	autodiscover	mail.yourdomain.extension
+CNAME	autoconfig	    mail.yourdomain.extension
+MX	    @	            mail.yourdomain.extension	10
+
+TXT	    @	            “v=spf1 mx a -all”
+TXT	    _dmarc	        “v=DMARC1; p=reject; rua=mailto:mailauth-reports@yourdomain.extension”
+TXT	    dkim._domainkey	“v=DKIM1; k=rsa; t=s; s=email; p=YOUR_DKIM_KEY“
+
+
+Change host name
+hostname -f
+hostnamectl set-hostname yourhostname.yourdomain.extension

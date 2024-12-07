@@ -1,0 +1,95 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rabbitmq-single-node.fullname" . }}
+  labels:
+    app: {{ include "rabbitmq-single-node.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "rabbitmq-single-node.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "rabbitmq-single-node.name" . }}
+    spec:
+      {{- if .Values.securityContext.enabled }}
+      securityContext:
+        fsGroup: {{ .Values.securityContext.fsGroup }}
+      {{- end }}
+      {{- if .Values.initContainer.enabled }}
+      initContainers:
+        - name: init-chown
+          image: "{{ .Values.initContainer.image }}:{{ .Values.initContainer.tag }}"
+          command:
+{{ toYaml .Values.initContainer.command | indent 12 }}
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+      {{- end }}
+      containers:
+        - name: rabbitmq
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.ports.amqp }}
+              name: amqp
+            - containerPort: {{ .Values.service.ports.management }}
+              name: management
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: "{{ .Values.rabbitmq.username }}"
+            - name: RABBITMQ_DEFAULT_PASS
+              value: "{{ .Values.rabbitmq.password }}"
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+          resources:
+            limits:
+              cpu: "{{ .Values.resources.limits.cpu }}"
+              memory: "{{ .Values.resources.limits.memory }}"
+            requests:
+              cpu: "{{ .Values.resources.requests.cpu }}"
+              memory: "{{ .Values.resources.requests.memory }}"
+      volumes:
+        - name: rabbitmq-data
+          persistentVolumeClaim:
+            claimName: {{ include "rabbitmq-single-node.fullname" . }}-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "rabbitmq-single-node.fullname" . }}-service
+  labels:
+    app: {{ include "rabbitmq-single-node.name" . }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.ports.amqp }}
+      targetPort: amqp
+      name: amqp
+    - port: {{ .Values.service.ports.management }}
+      targetPort: management
+      name: management
+  selector:
+    app: {{ include "rabbitmq-single-node.name" . }}
+---
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "rabbitmq-single-node.fullname" . }}-pvc
+  labels:
+    app: {{ include "rabbitmq-single-node.name" . }}
+spec:
+  accessModes:
+    {{- toYaml .Values.persistence.accessModes | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+  {{- if .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+  {{- end }}
+{{- end }}

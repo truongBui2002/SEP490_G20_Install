@@ -1,0 +1,5 @@
+helm install redis bitnami/redis --set volumePermissions.enabled=true,replica.replicaCount=2,auth.enabled=true,auth.password=icodervn,master.livenessProbe.enabled=false,master.readinessProbe.enabled=false,replica.livenessProbe.enabled=false -n apps
+
+
+
+helm install redis bitnami/redis -f redis-values.yaml -n apps

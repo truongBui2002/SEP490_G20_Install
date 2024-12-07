@@ -1,0 +1,24 @@
+helm install learningdb bitnami/postgresql --set volumePermissions.enabled=true --namespace apps
+
+kubectl get secret --namespace apps learningdb-postgresql -o jsonpath="{.data.postgres-password}" | base64 -d
+
+kubectl get secret learningdb-postgresql --namespace apps -o yaml
+
+postgres
+HDEXXlCvY7
+109.123.238.31
+31435
+
+dotnet ef migrations add InitialCreate --output-dir Data/Migrations --project Learning.Infrastructure --startup-project Learning.API
+
+dotnet ef migrations add AddPriorityProblemSolution --output-dir Data/Migrations --project Learning.Infrastructure --startup-project Learning.API
+
+dotnet ef database update
+
+dotnet ef migrations add UpdateLectureComments --output-dir Data/Migrations --project Learning.Infrastructure --startup-project Learning.API
+
+
+
+SELECT version();
+SHOW wal_level;
+ALTER SYSTEM SET wal_level = logical; // replica

@@ -1,0 +1,20 @@
+kubectl apply -f identity-postgres-pvc.yaml
+helm show values bitnami/postgresql > identity-postgresql-values.yaml 
+-- để nó về hết 3Gi ---
+
+
+helm install identitydb bitnami/postgresql \
+  --set volumePermissions.enabled=true \
+  --namespace apps \
+  -f identity-postgresql-values.yaml
+
+kubectl get secret --namespace apps identitydb-postgresql -o jsonpath="{.data.postgres-password}" | base64 -d
+
+kubectl get secret identitydb-postgresql --namespace apps -o yaml
+
+https://localhost:6005/.well-known/openid-configuration
+
+postgres
+nfs59dEZ8S
+109.123.238.31
+32754

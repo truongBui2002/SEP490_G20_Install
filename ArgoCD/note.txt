@@ -1,0 +1,16 @@
+--tài khoản--
+admin
+icodervn
+
+
+helm show values argo-cd/argo-cd > argocd-values.yaml
+
+helm install --values argocd-values.yaml argocd argo-cd/argo-cd --namespace argocd --create-namespace
+helm install argocd argo-cd/argo-cd --namespace argocd --create-namespace
+--connect bằng ssh
+--tạo key
+ssh-keygen -t ed25519 -C "buivantruong16082002@gmail.com"
+--copy public key 
+Get-Content C:\Users\LENOVO\.ssh\id_ed25519.pub | clip 
+--lấy ra private key
+cat ~/.ssh/id_ed25519

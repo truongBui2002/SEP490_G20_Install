@@ -1,0 +1,11 @@
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
+helm install prometheus-stack prometheus-community/kube-prometheus-stack \
+  --set grafana.adminPassword=icodervn \
+  --namespace=prometheus-stack --create-namespace
+
+
+
+--account--
+admin
+prom-operator

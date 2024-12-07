@@ -1,0 +1,34 @@
+sudo apt install certbot python3-certbot-nginx
+
+sudo certbot --nginx -d icoder.vn
+
+sudo certbot renew --dry-run
+
+sudo certbot --nginx -d hub.icoder.vn
+sudo certbot --nginx -d rancher.icoder.vn
+
+sudo certbot delete --cert-name grafana.icoder.vn
+sudo certbot --nginx -d  grafana.icoder.vn
+sudo certbot --nginx -d jenkins.icoder.vn
+sudo certbot --nginx -d argocd.icoder.vn
+
+sudo certbot --nginx -d codesandbox.icoder.vn
+sudo certbot --nginx -d kibana.icoder.vn
+
+sudo certbot --nginx -d community.icoder.vn
+sudo certbot delete --cert-name community.icoder.vn
+
+sudo certbot --nginx -d sonarqube.icoder.vn
+
+sudo certbot --nginx -d qdrant.icoder.vn
+
+
+sudo certbot --nginx -d mail.icoder.vn
+
+sudo certbot --nginx -d lsp.icoder.vn
+sudo certbot --nginx -d kafka.icoder.vn
+
+sudo certbot --nginx -d api.icoder.vn
+sudo certbot --nginx -d accounts.icoder.vn
+sudo certbot delete --cert-name account.icoder.vn
+sudo certbot --nginx -d admin.icoder.vn

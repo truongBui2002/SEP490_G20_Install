@@ -1,0 +1,27 @@
+sudo systemctl reload nginx
+sudo ufw allow OpenSSH
+sudo ufw allow 'Nginx Full'
+
+
+sudo ./run.py --stop-after-configfile-check icoder.vn
+
+sudo hostnamectl set-hostname mail.icoder.vn
+sudo ./run.py --interactive icoder.vn
+
+sudo nano /etc/dovecot/conf.d/10-master.conf
+
+dig -x IP-address +short
+
+
+Record type	Hostname	Priority	Value	
+MX	icoder.vn	10	mail.icoder.vn.	Delete
+TXT	icoder.vn		"v=spf1 a mx ip4:109.123.237.26 ~all"	Delete
+
+
+portainer          portainer                   ClusterIP   10.107.242.180   <none>        9443/TCP,30776/TCP
+prometheus-stack   prometheus-stack-grafana    ClusterIP   10.110.232.186   <none>        80/TCP 
+storage            longhorn-frontend           ClusterIP   10.101.55.142    <none>        80/TCP
+
+
+
+

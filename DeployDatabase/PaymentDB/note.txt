@@ -1,0 +1,22 @@
+helm show values bitnami/postgresql > payment-postgresql-values.yaml 
+-- để nó về hết 3Gi ---
+
+helm install paymentdb bitnami/postgresql \
+  --set volumePermissions.enabled=true \
+  --namespace apps \
+  -f payment-postgresql-values.yaml
+
+kubectl get secret --namespace apps paymentdb-postgresql -o jsonpath="{.data.postgres-password}" | base64 -d
+
+kubectl get secret paymentdb-postgresql --namespace apps -o yaml
+
+
+postgres
+aThYvGdv5k
+109.123.238.31
+31471
+
+Add-Migration InitialCreate -OutputDir Data/Migrations -Project AI.Infrastructure -StartupProject AI.API
+dotnet ef migrations add InitialCreate --output-dir Data/Migrations --project Payment.Infrastructure --startup-project Payment.API
+
+dotnet ef database update

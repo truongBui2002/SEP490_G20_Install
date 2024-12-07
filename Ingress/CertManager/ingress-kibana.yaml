@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-kibana
+  namespace: apps
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: http-01-production
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: kibana.icoder.vn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kibana-kibana
+                port:
+                  number: 5601
+  tls:
+    - hosts:
+        - kibana.icoder.vn
+      secretName: kibana-icoder-vn

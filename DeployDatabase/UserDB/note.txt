@@ -1,0 +1,22 @@
+kubectl apply -f user-postgresql-pvc.yaml
+helm show values bitnami/postgresql > user-postgresql-values.yaml 
+-- để nó về hết 3Gi ---
+
+
+helm install userdb bitnami/postgresql \
+  --set volumePermissions.enabled=true \
+  --namespace apps \
+  -f user-postgresql-values.yaml
+
+kubectl get secret --namespace apps userdb-postgresql -o jsonpath="{.data.postgres-password}" | base64 -d
+
+kubectl get secret communitydb-postgresql --namespace apps -o yaml
+
+
+postgres
+pVw5ParNpf
+109.123.238.31
+31442
+
+
+dotnet ef migrations add InitialCreate --output-dir Data/Migrations --project User.Infrastructure --startup-project User.API

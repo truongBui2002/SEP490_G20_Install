@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: default
+spec:
+  containers:
+    - name: nginx
+      image: hub.icoder.vn/k8s/nginx
+      ports:
+        - containerPort: 80
+  imagePullSecrets:
+    - name: harbor-secret
+

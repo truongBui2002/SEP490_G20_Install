@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eclipsejdtls-deployment
+  namespace: apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eclipsejdtls
+  template:
+    metadata:
+      labels:
+        app: eclipsejdtls
+    spec:
+      containers:
+      - name: eclipsejdtls
+        image: truongbui2002/eclipsejdtls
+        command: ["bash", "-c", "npm install && npm run start:example:server:jdtls"]
+        ports:
+        - containerPort: 30003
+        workingDir: /home/mlc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eclipsejdtls-service
+  namespace: apps
+spec:
+  selector:
+    app: eclipsejdtls
+  ports:
+    - protocol: TCP
+      port: 30003
+      targetPort: 30003
+  type: ClusterIP

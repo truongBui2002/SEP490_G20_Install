@@ -1,0 +1,16 @@
+helm show values bitnami/rabbitmq > rabbitmq-values.yaml
+
+username: icodervn
+password: icodervn
+erlangCookie = "Btz2VHBd0C10tSRlWL8x2TWLBphwcrPS"
+
+metrics.enabled=true
+helm install rabbitmq bitnami/rabbitmq --namespace apps -f rabbitmq-values.yaml
+
+helm uninstall rabbitmq --namespace apps
+
+helm install rabbitmq bitnami/rabbitmq --namespace apps \
+  --set auth.username=icodervn \
+  --set auth.password=icodervn \
+  --set auth.erlangCookie="Btz2VHBd0C10tSRlWL8x2TWLBphwcrPS" \
+  --set metrics.enabled=true

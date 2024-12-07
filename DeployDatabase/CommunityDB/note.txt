@@ -1,0 +1,19 @@
+kubectl apply -f community-postgresql-pvc.yaml
+helm show values bitnami/postgresql > community-postgresql-values.yaml 
+-- để nó về hết 3Gi ---
+
+
+helm install communitydb bitnami/postgresql \
+  --set volumePermissions.enabled=true \
+  --namespace apps \
+  -f community-postgresql-values.yaml
+
+kubectl get secret --namespace apps communitydb-postgresql -o jsonpath="{.data.postgres-password}" | base64 -d
+
+kubectl get secret communitydb-postgresql --namespace apps -o yaml
+
+
+postgres
+5tzZIvuPmC
+109.123.238.31
+30644

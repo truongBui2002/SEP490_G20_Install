@@ -1,0 +1,47 @@
+
+--token--
+jenkins sqa_dd28fe7191f7ddea273868a82ffc0f1ce947c054 
+
+
+helm install rabbitmq bitnami/rabbitmq-cluster-operator --namespace apps
+
+
+--sonatoken
+jenkinsintegration
+sqa_feaf46aa371b087a5a4c248ef95fca0486bc6d0d
+
+
+install with kubernetes
+helm install sonarqube oci://registry-1.docker.io/bitnamicharts/sonarqube \
+  --namespace sonarqube \
+  --create-namespace \
+  --values sonarqube-values.yaml
+
+
+
+  NOTES:
+** Please be patient while the chart is being deployed **
+
+Your SonarQube(TM) site can be accessed through the following DNS name from within your cluster:
+
+    sonarqube.sonarqube.svc.cluster.local (port 80)
+
+To access your SonarQube(TM) site from outside the cluster follow the steps below:
+
+1. Get the SonarQube(TM) URL by running these commands:
+
+   kubectl port-forward --namespace sonarqube svc/sonarqube 80:80 &
+   echo "SonarQube(TM) URL: http://127.0.0.1/"
+
+2. Open a browser and access SonarQube(TM) using the obtained URL.
+
+3. Login with the following credentials below:
+
+  echo Username: admin
+  echo Password: $(kubectl get secret --namespace sonarqube sonarqube -o jsonpath="{.data.sonarqube-password}" | base64 -d)
+
+WARNING: There are "resources" sections in the chart not set. Using "resourcesPreset" is not recommended for production. For production installations, please set the following values according to your workload needs:
+  - plugins.resources
+  - resources
+  - sysctl.resources
++info https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/

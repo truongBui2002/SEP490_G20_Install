@@ -1,0 +1,29 @@
+helm repo add qdrant https://qdrant.to/helm
+helm show values qdrant/qdrant > qdrant-values.yaml
+
+helm install qdrant qdrant/qdrant -f qdrant-values.yaml --namespace apps
+
+
+
+The full Qdrant documentation is available at https://qdrant.tech/documentation/.
+
+To forward Qdrant's ports execute one of the following commands:
+  export POD_NAME=$(kubectl get pods --namespace apps -l "app.kubernetes.io/name=qdrant,app.kubernetes.io/instance=qdrant" -o jsonpath="{.items[0].metadata.name}")
+
+If you want to use Qdrant via http execute the following commands
+  kubectl --namespace apps port-forward $POD_NAME 6333:6333
+
+If you want to use Qdrant via grpc execute the following commands
+  kubectl --namespace apps port-forward $POD_NAME 6334:6334
+
+If you want to use Qdrant via p2p execute the following commands
+  kubectl --namespace apps port-forward $POD_NAME 6335:6335
+
+If you want to access Qdrant through the ingress controller
+  https://qdrant.icoder.vn/
+root@vmi2178408:~# kubectl get pods --namespace apps -l "app.kubernetes.io/name=qdrant,app.kubernetes.io/instance=qdrant" -o jsonpath="{.items[0].metadata.name}"
+
+
+
+
+API_KEY: f1a7b256-707e-4260-a174-0d4d304bef86

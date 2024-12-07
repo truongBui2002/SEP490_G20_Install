@@ -1,0 +1,6 @@
+apiVersion: v2
+name: rabbitmq-single-node
+description: A Helm chart for deploying a single-node RabbitMQ on Kubernetes with init containers
+type: application
+version: 0.1.0
+appVersion: "4.0-management"

@@ -1,0 +1,43 @@
+helm show values harbor/harbor > harbor-values.yaml
+
+helm install harbor harbor --namespace harbor --create-namespace --values harbor-values.yaml
+
+docker push hub.icoder.vn/k8s/nginx:latest
+<domain>/<project>/tag
+
+
+kubectl create secret docker-registry harbor-secret \
+  --docker-server=hub.icoder.vn \
+  --docker-username=admin \
+  --docker-password=icodervn \
+  --docker-email=buivantruong16082002@gmail.com \
+  -n apps
+
+
+kubectl get secret harbor-secret --output=yaml
+
+kubectl get secret harbor-secret --output="jsonpath={.data.\.dockerconfigjson}" | base64 --decode
+
+hub.icoder.vn/k8s/ai-service:1.50
+
+
+docker build -t hub.icoder.vn/k8s/user-frontend:v1.51 .
+docker build -t hub.icoder.vn/k8s/admin-frontend:v1.51 .
+
+docker build -f Services/AI/AI.API/Dockerfile -t hub.icoder.vn/k8s/ai-service:v1.51 .
+docker build -f Services/Community/Community.API/Dockerfile -t hub.icoder.vn/k8s/community-service:v1.51 .
+docker build -f Services/Identity/AuthServer/Dockerfile -t hub.icoder.vn/k8s/auth-server:v1.51 .
+docker build -f Services/Learning/Learning.API/Dockerfile -t hub.icoder.vn/k8s/learning-service:v1.51 .
+docker build -f Services/User/User.API/Dockerfile -t hub.icoder.vn/k8s/user-service:v1.51 .
+docker build -f ApiGateways/YarpApiGateway/Dockerfile -t hub.icoder.vn/k8s/api-gateway:v1.51 .
+
+
+docker push hub.icoder.vn/k8s/user-frontend:v1.62
+docker push hub.icoder.vn/k8s/admin-frontend:v1.61
+docker push hub.icoder.vn/k8s/ai-service:v1.51
+docker push hub.icoder.vn/k8s/community-service:v1.51
+docker push hub.icoder.vn/k8s/auth-server:v1.51
+docker push hub.icoder.vn/k8s/learning-service:v1.51
+docker push hub.icoder.vn/k8s/user-service:v1.51
+docker push hub.icoder.vn/k8s/api-gateway:v1.51
+

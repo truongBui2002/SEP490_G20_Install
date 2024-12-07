@@ -1,0 +1,10 @@
+cần cài nfs-client trên các node để dùng read wirte many
+
+
+sudo mkdir -p /data/longhorn-storage
+
+sudo apt-get install nfs-common -y
+
+sudo apt install open-iscsi
+
+sudo apt-get install cryptsetup

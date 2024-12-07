@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-portainer
+  namespace: portainer
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: http-01-production
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: portainer.icoder.vn
+      http:
+        paths:
+          - path: /portainer
+            pathType: Prefix
+            backend:
+              service:
+                name: portainer
+                port:
+                  number: 9443
+  tls:
+    - hosts:
+        - portainer.icoder.vn
+      secretName: portainer-icoder-vn

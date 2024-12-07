@@ -1,0 +1,30 @@
+cd ~/Elasticsearch/elasticsearch
+helm install elasticsearch . --namespace apps
+
+cd ~/Elasticsearch/kibana
+helm install kibana . --namespace apps
+echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+
+kubectl apply -f ingress-kibana.yaml
+
+
+cd ~/Elasticsearch
+# Xóa các Pod
+kubectl delete pod -l app=kibana --namespace apps
+kubectl delete secret kibana-kibana-es-token -n apps
+# Xóa các ConfigMaps
+kubectl delete configmap -l app=kibana --namespace apps
+
+# Xóa các RoleBindings và Roles
+kubectl delete rolebinding -l app=kibana --namespace apps
+kubectl delete role -l app=kibana --namespace apps
+
+# Xóa các ServiceAccounts
+kubectl delete serviceaccount -l app=kibana --namespace apps
+
+# Xóa các Service
+kubectl delete service -l app=kibana --namespace apps
+
+# Xóa các tài nguyên bổ sung nếu còn lại
+kubectl delete all -l app=kibana --namespace apps
