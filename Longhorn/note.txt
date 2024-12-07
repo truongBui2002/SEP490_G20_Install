@@ -8,3 +8,12 @@ sudo apt-get install nfs-common -y
 sudo apt install open-iscsi
 
 sudo apt-get install cryptsetup
+
+
+
+helm repo add longhorn https://charts.longhorn.io
+helm repo update
+helm search repo longhorn
+helm pull longhorn/longhorn --version 1.2.2
+tar -xzf longhorn-1.2.2.tgz
+
